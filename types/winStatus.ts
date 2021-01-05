@@ -1,0 +1,1 @@
+export type WinStatus = "win" | "lose" | "draw" | null;
