@@ -9,20 +9,12 @@ import {
 import Link from "next/link";
 import React from "react";
 import { HelpCircle, Sun, Moon } from "react-feather";
-import css from "styled-jsx/css";
-
-const { className, styles } = css.resolve`
-  div {
-    content-visibility: auto;
-    contain-intrinsic-size: 0 71px;
-  }
-`;
 
 export default function Footer() {
   const { colorMode, toggleColorMode } = useColorMode();
 
   return (
-    <Box p="10px 0" className={className}>
+    <Box p="10px 0">
       <Divider mb="10px" />
       <Flex>
         <Box w="50%" textAlign="center">
@@ -45,7 +37,6 @@ export default function Footer() {
           />
         </Box>
       </Flex>
-      {styles}
     </Box>
   );
 }
