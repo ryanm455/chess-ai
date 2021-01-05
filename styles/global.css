@@ -1,0 +1,9 @@
+html,
+body {
+  overscroll-behavior-y: contain;
+}
+
+#__next {
+  position: relative;
+  min-height: 100vh;
+}

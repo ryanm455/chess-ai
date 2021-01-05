@@ -1,4 +1,4 @@
-import { Flex, Button, Heading, Icon, useColorMode } from "@chakra-ui/react";
+import { Flex, Heading, Icon, useColorMode, IconButton } from "@chakra-ui/react";
 import Link from "next/link";
 import React from "react";
 import { BarChart2, Play } from "react-feather";
@@ -19,21 +19,27 @@ export default function Navbar() {
     >
       <div>
         <Link href="/">
-          <Heading color="purple.500" cursor="pointer">
+          <Heading color="blue.600" cursor="pointer">
             chess.ai
           </Heading>
         </Link>
       </div>
       <Flex gridGap="10px">
         <Link href="/stats">
-          <Button rightIcon={<Icon as={BarChart2} />} variant="outline">
-            Stats
-          </Button>
+          <IconButton
+            aria-label="Stats"
+            variant="ghost"
+            color="gray.500"
+            icon={<Icon as={BarChart2} />}
+          />
         </Link>
         <Link href="/play">
-          <Button rightIcon={<Icon as={Play} />} variant="outline">
-            Play
-          </Button>
+          <IconButton
+            aria-label="Play"
+            variant="ghost"
+            color="gray.500"
+            icon={<Icon as={Play} />}
+          />
         </Link>
       </Flex>
     </Flex>

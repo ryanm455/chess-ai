@@ -14,7 +14,7 @@ export default function Footer() {
   const { colorMode, toggleColorMode } = useColorMode();
 
   return (
-    <Box p="10px 0">
+    <Box p="10px 0" position="absolute" left={0} right={0} bottom={0}>
       <Divider mb="10px" />
       <Flex>
         <Box w="50%" textAlign="center">
