@@ -1,4 +1,4 @@
-# Chess AI with React JS and Next JS
+# Chess AI
 
 ## Overview
 
