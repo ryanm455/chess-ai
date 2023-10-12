@@ -26,7 +26,6 @@ const HomeSection = ({
     h="400px"
     bg={!odd ? useColorModeValue("#EDF2F7", "#2D3748") : undefined}
     dir={odd ? "row-reverse" : undefined}
-    key={idx}
   >
     <Flex w="100%" align="center" justify="center">
       {icon}

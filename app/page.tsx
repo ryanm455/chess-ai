@@ -28,7 +28,7 @@ const Home = () => (
   <>
     {data.map((e, i) => {
       const odd = (i + 1) % 2 === 0;
-      return <HomeSection odd={odd} idx={i} {...e} />;
+      return <HomeSection odd={odd} idx={i} {...e} key={i} />;
     })}
     <Flex justify="center" align="center" h="200px">
       <Box ta="center">

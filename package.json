@@ -29,9 +29,7 @@
   "devDependencies": {
     "@next/bundle-analyzer": "^13.5.4",
     "@types/chess.js": "^0.13.5",
-    "@types/node": "^20.8.4",
     "@types/react": "^18.2.28",
-    "@types/styled-jsx": "^2.2.9",
     "typescript": "^5.2.2",
     "worker-loader": "^3.0.8"
   }
