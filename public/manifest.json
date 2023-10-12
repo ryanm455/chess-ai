@@ -22,6 +22,6 @@
   ],
   "related_applications": [{
     "platform": "webapp",
-    "url": "https://chess-ai.vercel.app/manifest.json"
+    "url": "https://chess-ai-mauve.vercel.app/manifest.json"
   }]
 }

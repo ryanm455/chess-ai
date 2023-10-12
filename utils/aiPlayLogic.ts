@@ -1,7 +1,6 @@
 import {
   Chess,
   ChessInstance,
-  Move,
   Piece,
   PieceColor,
   PieceType,

@@ -1,19 +1,39 @@
-## Next.js Repl.it Template
+# Chess AI with React JS and Next JS
 
-[Next.js](https://nextjs.org/) is an easy-to-use React framework that ships with server-side rendering, hot module reloading, and many other features out-of-the-box. 
+## Overview
 
-By default, Repl.it runs the `dev` script, but you can configure it by changing the `run` field in `.replit`.
+This web application was built with React JS and Next JS, and designed to allow users to play chess against a computer opponent.
 
-To add a new page simply add a .js, .jsx, .ts, or .tsx file in the `pages` directory. Pages are associated with a route based on their file name. For example `pages/about.js` is mapped to `/about`. You can even add dynamic route parameters with the filename.
+![Chess AI Screenshot](public/homepage.png)
+![Chess AI Screenshot](public/gameplay.png)
 
-We've already created `/pages/index.js` for you to get you started. Feel free to change its contents and see it live-update!
+## Installation
 
-```javascript
-function HomePage() {
-  return <div>Welcome to Next.js!</div>
-}
+To run this Chess AI application locally, clone the repo and then:
 
-export default HomePage
-```
+1. Navigate to the directory and install the dependencies:
 
-Refer to the [Next.js docs](https://nextjs.org/docs/getting-started) to learn more.
+   ```bash
+   npm install
+   ```
+
+2. Start the development server:
+
+   ```bash
+   npm run dev
+   ```
+
+3. Open your web browser and access the application at [http://localhost:3000](http://localhost:3000).
+
+## AI Algorithm
+
+The application utilizes a basic minimax algorithm with alpha-beta pruning.
+
+The AI opponent is not intended to be exceptionally strong, to further the difficulty, the depth of possible moves that the algorithm calculates up to can be adjusted.
+
+## Technologies Used
+
+- React JS
+- Next JS
+- Chess.js (for chess rules and move generation)
+- Alpha-beta pruning algorithm
