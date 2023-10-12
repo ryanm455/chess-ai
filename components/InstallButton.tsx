@@ -1,21 +1,38 @@
-import { Button, Icon } from "@chakra-ui/react";
-import { PWAContext } from "pages/_app";
-import React, { useContext } from "react";
+"use client"
+import { Button } from "@mantine/core";
+import { MouseEventHandler, useEffect, useState } from "react";
 import { Download } from "react-feather";
 
-export default function InstallButton() {
-  const c = useContext(PWAContext);
+const InstallButton = () => {
+  const [installPrompt, setInstallPrompt] = useState<Event | null>(null);
+
+  const handler: EventListener = (e) => {
+    e.preventDefault();
+    setInstallPrompt(e);
+  };
+
+  const onClick: MouseEventHandler<HTMLButtonElement> = (e) => {
+    e.preventDefault();
+    // @ts-ignore
+    installPrompt?.prompt();
+  };
+
+  useEffect(() => {
+    window.addEventListener("beforeinstallprompt", handler);
+    return () => window.removeEventListener("beforeinstallprompt", handler);
+  }, []);
+
+  if (!installPrompt) return null;
 
   return (
-    c.installable && (
-      <Button
-        rightIcon={<Icon as={Download} />}
-        variant="outline"
-        mt="20px"
-        onClick={c.install}
-      >
-        Install
-      </Button>
-    )
+    <Button
+      rightSection={<Download />}
+      mt="20px"
+      onClick={onClick}
+    >
+      Install
+    </Button>
   );
 }
+
+export default InstallButton;
