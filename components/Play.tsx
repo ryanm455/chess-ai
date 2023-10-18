@@ -1,4 +1,6 @@
 "use client";
+import type { Chess as ChessType, ChessInstance, ShortMove } from "chess.js";
+import type { Square } from "react-chessboard/dist/chessboard/types";
 import {
   Button,
   Flex,
@@ -12,13 +14,26 @@ import {
   TabsTab,
   Text,
 } from "@mantine/core";
-import { Chess, ChessInstance, ShortMove } from "chess.js";
-import { useStatsStore } from "hooks/stats";
-import React, { useState } from "react";
-import { Chessboard } from "react-chessboard";
-import { Square } from "react-chessboard/dist/chessboard/types";
-import { modals } from "@mantine/modals";
 import { useRouter } from "next/navigation";
+import { useStatsStore } from "hooks/stats";
+import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
+
+const BOARD_SIZE = 500;
+
+const Chessboard = dynamic(
+  () => import("react-chessboard").then((i) => i.Chessboard),
+  {
+    ssr: false,
+    loading: () => (
+      <div
+        style={{ width: BOARD_SIZE, height: BOARD_SIZE, background: "#f0d9b5" }}
+      />
+    ),
+  }
+);
+
+let Chess: typeof ChessType | undefined;
 
 type AIStats = {
   positions: number;
@@ -34,28 +49,28 @@ const Play = () => {
     evaluation: 0,
   });
   const gameStats = useStatsStore((state) => state);
-  const [game, setGame] = useState<ChessInstance>(new Chess());
+  const [game, setGame] = useState<ChessInstance | undefined>();
   const router = useRouter();
 
   const makeAMove = (move: ShortMove) => {
-    const gameCopy = { ...game };
+    const gameCopy = { ...game! };
     const result = gameCopy.move(move);
     setGame(gameCopy);
     return result;
   };
 
-  const resetGame = () => setGame(new Chess());
+  const resetGame = () => setGame(new Chess!());
 
   const checkWin = (): boolean => {
-    if (game.game_over()) {
-      if (game.in_checkmate()) {
-        gameStats[game.turn() === "b" ? "incrementWins" : "incrementLosses"]();
+    if (game!.game_over()) {
+      if (game!.in_checkmate()) {
+        gameStats[game!.turn() === "b" ? "incrementWins" : "incrementLosses"]();
       } else {
         gameStats.incrementDraws();
       }
       openModal(
-        game.game_over() && game.in_checkmate()
-          ? game.turn() === "b"
+        game!.game_over() && game!.in_checkmate()
+          ? game!.turn() === "b"
             ? "Black Won"
             : "You Lost"
           : "You Drew"
@@ -73,7 +88,7 @@ const Play = () => {
     // @ts-ignore
     const worker = new Worker();
 
-    worker.postMessage({ fen: game.fen(), depth });
+    worker.postMessage({ fen: game!.fen(), depth });
     worker.onmessage = function ({ data: { bestMove, ...stats } }) {
       worker.terminate();
 
@@ -85,7 +100,7 @@ const Play = () => {
   };
 
   const onPieceDrop = (sourceSquare: Square, targetSquare: Square): boolean => {
-    if (game.get(sourceSquare)!.color === "b") return false;
+    if (game!.get(sourceSquare)!.color === "b") return false;
 
     const move = makeAMove({
       to: targetSquare,
@@ -100,8 +115,8 @@ const Play = () => {
     return true;
   };
 
-  const openModal = (gameStatus: String) =>
-    modals.openConfirmModal({
+  const openModal = async (gameStatus: String) =>
+    (await import("@mantine/modals").then((i) => i.modals)).openConfirmModal({
       title: "Game Ended",
       children: <Text size="sm">{gameStatus}!</Text>,
       labels: { confirm: "Play Again", cancel: "View Stats" },
@@ -109,7 +124,16 @@ const Play = () => {
       onConfirm: () => resetGame(),
     });
 
-  const history = game.history({ verbose: true });
+  useEffect(() => {
+    if (!Chess) {
+      import("chess.js").then((e) => {
+        Chess = e.Chess;
+        setGame(new Chess());
+      });
+    }
+  }, []);
+
+  const history = game ? game.history({ verbose: true }) : [];
 
   return (
     <>
@@ -120,9 +144,9 @@ const Play = () => {
       >
         <Flex justify="center" align="center" m="0 auto">
           <Chessboard
-            position={game.fen()}
+            position={game?.fen()}
             onPieceDrop={onPieceDrop}
-            boardWidth={500}
+            boardWidth={BOARD_SIZE}
           />
         </Flex>
         <Tabs
@@ -164,8 +188,15 @@ const Play = () => {
           </TabsPanel>
           <TabsPanel value="Options" p={10}>
             <Stack>
-              <Button onClick={resetGame}>Reset Game</Button>
-              <Button onClick={() => (game.undo(), game.undo())}>Undo</Button>
+              <Button onClick={game && resetGame} disabled={!game}>
+                Reset Game
+              </Button>
+              <Button
+                onClick={() => game && (game.undo(), game.undo())}
+                disabled={!game}
+              >
+                Undo
+              </Button>
               <Select
                 placeholder="Change Depth (Changes Difficulty and Calculation Speed)"
                 onChange={(v) => v?.length && setDepth(parseInt(v!))}
