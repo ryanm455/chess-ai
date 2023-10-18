@@ -1,8 +1,8 @@
-# Chess AI with React JS and Next JS
+# Chess AI
 
 ## Overview
 
-This web application was built with React JS and Next JS, and designed to allow users to play chess against a computer opponent.
+Web application, built with React JS and Next JS, designed to allow users to play chess against a computer opponent.
 
 ![Chess AI Screenshot](public/homepage.png)
 ![Chess AI Screenshot](public/gameplay.png)
