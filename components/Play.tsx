@@ -49,7 +49,7 @@ const Play = () => {
     evaluation: 0,
   });
   const gameStats = useStatsStore((state) => state);
-  const [game, setGame] = useState<ChessInstance | undefined>();
+  const [game, setGame] = useState<ChessInstance | undefined>(Chess ? new Chess() : undefined);
   const router = useRouter();
 
   const makeAMove = (move: ShortMove) => {
